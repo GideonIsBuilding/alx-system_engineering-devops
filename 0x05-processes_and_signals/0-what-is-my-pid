@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-ps | grep "0-what-is-my-pid" | awk '{ print $1 }'
+ps | grep "bash" | awk '{ print $1 }'
