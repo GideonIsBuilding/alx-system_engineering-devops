@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# This script is diplaying "Best School" 10 times
+
+names='Best School'
+counter=1
+
+while [ $counter -le 10 ]
+do
+   echo "$names"
+   ((counter++))
+done
