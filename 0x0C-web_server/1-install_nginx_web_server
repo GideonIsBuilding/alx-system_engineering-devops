@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+# Configures a new ubuntu machine by installing Nginx
+# It should be listening on port 80
+# Serve a page that would return a Hello World string
+
+green_echo() {
+    echo  "\e[32m$1\e[0m"
+}
+
+#------------------------
+# Update and Istall Nginx
+#------------------------
+green_echo  "Updating and installing Nginx."
+sudo apt-get update -y -qq && \
+	 sudo apt-get install nginx -y
+
+green_echo  "Nginx installed."
+
+#------------
+# Start Nginx
+#------------
+green_echo  "Starting Nginx."
+sudo service nginx start
+
+#-----------------
+# Allow Nginx HTTP
+#-----------------
+green_echo  "Allowing Nginx HTTP."
+sudo ufw allow 'Nginx HTTP'
+
+#------------------------
+# Granting User Ownership
+#------------------------
+green_echo  "Granting user ownership."
+sudo chown -R "$USER":"$USER" /var/www/html
+sudo chmod -R 755 /var/www
+green_echo  "Done."
+
+#---------------------
+# Backup Default Index
+#---------------------
+green_echo  "Backing up default index."
+cp /var/www/html/index.nginx-debian.html /var/www/html/index.nginx-debian.html.bckp
+
+#-----------------
+# Create New Index
+#-----------------
+green_echo  "Creating new index."
+echo -e "Hello World!" | dd status=none of=/var/www/html/index.nginx-debian.html
+
+#--------------
+# Restart Nginx
+#--------------
+sudo service nginx restart
+green_echo  "Completed. ✅"
