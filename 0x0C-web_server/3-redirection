@@ -4,52 +4,52 @@
 # Serve a page that would return a Hello World string
 
 green_echo() {
-    echo  "\e[32m$1\e[0m"
+    echo -e "\e[32m$1\e[0m"  # Added -e for interpretation of backslash escapes
 }
 
 #------------------------
-# Update and Istall Nginx
+# Update and Install Nginx
 #------------------------
-green_echo  "Updating and installing Nginx."
+green_echo "Updating and installing Nginx."
 sudo apt-get update -y -qq && \
-	 sudo apt-get install nginx -y
+sudo apt-get install nginx -y
 
-green_echo  "Nginx installed."
+green_echo "Nginx installed."
 
 #------------
 # Start Nginx
 #------------
-green_echo  "Starting Nginx."
+green_echo "Starting Nginx."
 sudo service nginx start
 
 #-----------------
 # Allow Nginx HTTP
 #-----------------
-green_echo  "Allowing Nginx HTTP."
+green_echo "Allowing Nginx HTTP."
 sudo ufw allow 'Nginx HTTP'
 
 #------------------------
 # Granting User Ownership
 #------------------------
-green_echo  "Granting user ownership."
+green_echo "Granting user ownership."
 sudo chown -R "$USER":"$USER" /var/www/html
 sudo chmod -R 755 /var/www
-green_echo  "Done."
+green_echo "Done."
 
 #---------------------
 # Backup Default Index
 #---------------------
-green_echo  "Backing up default index."
-cp /var/www/html/index.nginx-debian.html /var/www/html/index.nginx-debian.html.bckp
+green_echo "Backing up default index."
+sudo cp /var/www/html/index.nginx-debian.html /var/www/html/index.nginx-debian.html.bckp  # Added sudo
 
 #-----------------
 # Create New Index
 #-----------------
-green_echo  "Creating new index."
-echo "Hello World!" > /var/www/html/index.html
+green_echo "Creating new index."
+echo "Hello World!" | sudo tee /var/www/html/index.html  # Used sudo tee
 
 #--------------------
-# Redirect to YouTube
+# Configure Redirection
 #--------------------
 green_echo "Configuring redirection."
 sudo sed -i '/location \/ {/a \\trewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;' /etc/nginx/sites-available/default
@@ -57,5 +57,7 @@ sudo sed -i '/location \/ {/a \\trewrite ^/redirect_me https://www.youtube.com/w
 #--------------
 # Restart Nginx
 #--------------
+green_echo "Restarting Nginx."
 sudo service nginx restart
-green_echo  "Completed. ✅"
+
+green_echo "Configuration completed. ✅"
