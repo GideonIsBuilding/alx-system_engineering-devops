@@ -68,6 +68,6 @@ sudo sed -i '/^}/i \ \n\t# Custom 404 error page\n\terror_page 404 /custom_404.h
 # Restart Nginx
 #--------------
 green_echo "Restarting Nginx."
-sudo service nginx restart
+sudo systemctl reload nginx
 
 green_echo "Configuration completed. ✅"
