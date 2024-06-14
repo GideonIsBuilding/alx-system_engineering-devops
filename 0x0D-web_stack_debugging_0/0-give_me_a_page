@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 # The idea is to start apache so that
 # it returns a page saying Hello Holberton
-echo "ServerName localhost" >> /etc/apache2.conf
+echo "Hello Holberton" | sudo tee /var/www/html/index.html
 service apache2 start
